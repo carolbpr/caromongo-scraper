@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UFT-8">
+    <!--jQuery-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    <!--Bootstrap Link-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--CSS Style Sheet-->
+    <script src="/assets/css/style.css" type="text/css"></script>
+
+    <title>NYTimes Mongo Scraper</title>
+    <script src="https://code.jquery.com/jquery.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="navbar" class="navbar-collapse">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item active text-dark">
+                        <a class="nav-link" href="/"><b>HOME</b><span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/saved">SAVED ARTICLES</a>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" id="newScrape">SCRAPE NEW ARTICLES</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <b>
+            <hr></b>
+        <div class="row justify-content-center">
+            <img src="/assets/img/Logo.png" style="width: 50%;" alt="logo">
+        </div>
+    </div>
+    {{{ body }}}
+
+    <!--External app.js-->
+    <script src="/assets/js/app.js"></script>
+</body>
+
+</html>

@@ -25,6 +25,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
+// Set Handlebars.
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({
+    defaultLayout: "main",
+    partialsDir: path.join(__dirname, "/views/layouts/partials")
+}));
+app.set("view engine", "handlebars");
 
 // Connect to the Mongo DB
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
@@ -32,6 +40,28 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines
 mongoose.connect(MONGODB_URI);
 
 // Routes
+// ======
+
+//GET requests to render Handlebars pages
+app.get("/", function(req, res) {
+    db.articles.find({"saved": false}, function(error, data) {
+      var hbsObject = {
+        articles: data
+      };
+      console.log(hbsObject);
+      res.render("home", hbsObject);
+    });
+  });
+  
+  app.get("/saved", function(req, res) {
+    db.articles.find({"saved": true}).populate("notes").exec(function(error, articles) {
+      var hbsObject = {
+        articles: articles
+      };
+      res.render("saved", hbsObject);
+    });
+  });
+  
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
@@ -96,23 +126,20 @@ app.get("/articles/:id", function(req, res) {
     });
 });
 
-// Route for saving/updating an articles's associated notes
-app.post("/articles/:id", function(req, res) {
-  // Create a new notes and pass the req.body to the entry
-  db.notes.create(req.body)
-    .then(function(dbnotes) {
-      // If a notes was created successfully, find one articles with an `_id` equal to `req.params.id`. Update the articles to be associated with the new notes
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-      return db.articles.findOneAndUpdate({ _id: req.params.id }, { notes: dbnotes._id }, { new: true });
-    })
-    .then(function(dbarticles) {
-      // If we were able to successfully update an articles, send it back to the client
-      res.json(dbarticles);
-    })
-    .catch(function(err) {
-      // If an error occurred, send it to the client
-      res.json(err);
+// Save an article
+app.post("/articles/save/:id", function(req, res) {
+    // Use the article id to find and update its saved boolean
+    db.articles.findOneAndUpdate({ "_id": req.params.id }, { "saved": true})
+    // Execute the above query
+    .exec(function(err, doc) {
+      // Log any errors
+      if (err) {
+        console.log(err);
+      }
+      else {
+        // Or send the document to the browser
+        res.send(doc);
+      }
     });
 });
 
