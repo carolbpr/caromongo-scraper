@@ -54,12 +54,28 @@ app.get("/", function(req, res) {
   });
   
   app.get("/saved", function(req, res) {
-    db.articles.find({"saved": true}).populate("notes").exec(function(error, articles) {
+    db.articles.find({"saved": true}).populate("db.notes").exec(function(error, articles) {
+      console.log(articles);  
       var hbsObject = {
-        articles: articles
+        articles: articles,
       };
+      console.log(hbsObject);
       res.render("saved", hbsObject);
     });
+  });
+  app.get("/notes", function(req, res) {
+    db.articles.find({"saved": true}).populate("db.notes").exec(function(error, articles) {
+      console.log(articles);  
+      db.notes.find({"articles":articles.notes}).exec(function(error,notes){
+        console.log(notes);
+      var hbsObject = {
+        articles: articles,
+        notes:notes
+      };
+      console.log(hbsObject);
+      res.render("saved", hbsObject);
+    });
+  });
   });
   
 
@@ -78,7 +94,7 @@ app.get("/scrape", function(req, res) {
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this).find("h2").text();
       result.link = "https://www.nytimes.com" + $(this).find("a").attr("href");
-
+    
       // Create a new articles using the `result` object built from scraping
       db.articles.create(result)
         .then(function(dbarticles) {
@@ -130,7 +146,7 @@ app.post("/articles/save/:id", function(req, res) {
 // Delete an article
 app.post("/articles/delete/:id", function(req, res) {
     // Use the article id to find and update its saved boolean, it won't appear in the saved articules list
-    db.articles.findOneAndUpdate({ "_id": req.params.id }, { "saved": false, "notes": []})
+    db.articles.findOneAndUpdate({ "_id": req.params.id }, { "saved": false, "notes": req.params.id})
     // Execute the above query
     .exec(function(err, doc) {
       // Log any errors
@@ -143,10 +159,42 @@ app.post("/articles/delete/:id", function(req, res) {
       }
     });
 });
+// Route for grabbing a specific Article by id, populate it with it's note
+app.get("/articles/:id", function(req, res) {
+    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+    db.articles.findOne({ _id: req.params.id })
+      // ..and populate all of the notes associated with it
+      .populate("notes")
+      .then(function(dbarticles) {
+        // If we were able to successfully find an Article with the given id, send it back to the client
+        res.json(dbarticles);
+      })
+      .catch(function(err) {
+        // If an error occurred, send it to the client
+        res.json(err);
+      });
+  });
+//Delete all articles in home page
+app.post("/articles/delete/:id", function(req, res) {
+    // Use the article id to find and update its saved boolean, it won't appear in the saved articules list
+    db.articles.findAll({ }, { "saved": false, "notes": []})
+    // Execute the above query
+    .exec(function(err, doc) {
+      // Log any errors
+      if (err) {
+        console.log(err);
+      }
+      else {
+        // Or send the document to the browser
+        res.send(doc);
+      }
+    });
+});
+
 // Create a new note
 app.post("/notes/save/:id", function(req, res) {
     // Create a new note and pass the req.body to the entry
-    var newNote = new Note({
+    var newNote = new db.notes({
       body: req.body.text,
       article: req.params.id
     });
@@ -160,7 +208,7 @@ app.post("/notes/save/:id", function(req, res) {
       // Otherwise
       else {
         // Use the article id to find and update it's notes
-        db.articles.findOneAndUpdate({ "_id": req.params.id }, {$push: { "notes": note } })
+        db.notes.findOneAndUpdate({ "articles": req.params.id }, {$push: { "body": note } })
         // Execute the above query
         .exec(function(err) {
           // Log any errors
