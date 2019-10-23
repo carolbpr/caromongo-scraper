@@ -14,7 +14,7 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <p class="previousNotes"> {{this.body}}</p>
-                                <button type="button" class="btn btn-danger deleteArticleNote" data-note-id={{this._id}} data-article-id={{this.articles}}>X</button>
+                                <button type="button" class="btn btn-danger deleteArticleNote" data-note-id={{this._id}} data-article-id={{this.article}}>X</button>
                             </div>
                         </div>
                     {{/each}}
@@ -36,3 +36,8 @@
         </div>
     </div>
 </div>
+
+<!--Clicked Notes Modal-->
+{{#each article}}
+    {{> notes-modal }}
+{{/each}}

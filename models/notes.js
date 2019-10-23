@@ -9,9 +9,9 @@ var notesSchema = new Schema({
     body: {
         type: String
     },
-    articles: {
+    article: {
         type: Schema.Types.ObjectId,
-        ref: "articles"
+        ref: "Article"
     }
 });
 
