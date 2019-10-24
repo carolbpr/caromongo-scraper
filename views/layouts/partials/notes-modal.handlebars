@@ -9,16 +9,13 @@
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-               {{log this level="info"}}
                 {{#if this.note}}
                 {{#each this.note}}
-                
-                <div class="panel panel-default">
-                    
-                        <p> {{body}}</p>
-                        <button type="button" class="btn btn-danger deleteArticleNote" data-note-id={{this._id}}
-                            data-article-id={{this.article}}>X</button>
-                    
+                <div class="input-group">
+                    <p> {{body}}</p>
+                    <button type="button" class="btn btn-danger deleteArticleNote" data-note-id={{this._id}}
+                        data-article-id={{this.article}} style="right: 0;
+    position: absolute;">X</button>
                 </div>
                 {{/each}}
                 {{else}}
@@ -28,7 +25,7 @@
                     </div>
                 </div>
                 {{/if}}
-                
+
                 <div class="form-group">
                     <textarea id="noteText{{this._id}}" class="form-control" rows="4" placeholder="New Note"></textarea>
                 </div>

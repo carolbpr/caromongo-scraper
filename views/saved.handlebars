@@ -1,23 +1,41 @@
-<!--Saved Articles Page-->
-
+<!--Nav Bar-->
+<div id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <ul class="nav justify-content-center">
+        <li class="nav-item text-dark">
+            <a class="nav-link" href="/"><b>HOME</b><span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/saved">SAVED ARTICLES</a>
+        </li>
+        <li class="nav-item">
+            <button type="button" class="btn btn-primary" id="deleteAll">CLEAR ARTICLES</button>
+        </li>
+    </ul>
+</div>
+</div>
+<div class="container" style="text-align:center">
+    <img src="/assets/img/Logo.png" style="width: 50%;" alt="logo">
+    <h1 style="font-family: News Cycle;">Saved Articles</h1>
+    <br><br><hr>
+</div>
+<!--Saved Articles page-->
 <div class="container">
-
     <div class="col-md-12">
         {{#if articles}}
-            {{#each articles}}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4>{{this.title}}</h4>
-                    </div>
-                    <div class="panel-body">
-                        <p> {{this.summary}}</p>
-                        <a href={{this.link}} target="_blank">{{this.link}}</a>
-                        <br><br>
-                        <button type="button" class="btn btn-success viewNote" data-toggle="modal" data-target="#noteModal{{this._id}}" data-id={{this._id}}>View/Add Notes</button>
-                        <button type="button" class="btn btn-danger deleteArticle" data-id={{this._id}}>Delete</button>
-                    </div>
-                </div>
-            {{/each}}
+        {{#each articles}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4><a href={{this.link}} target="_blank">{{this.title}}</a></h4>
+            </div>
+            <div class="panel-body">
+                <p> {{this.summary}}</p>
+                <button type="button" class="btn btn-success viewNote" data-toggle="modal"
+                    data-target="#noteModal{{this._id}}" data-id={{this._id}}>View/Add Notes</button>
+                <button type="button" class="btn btn-danger deleteSavedArticle" data-id={{this._id}}>Delete</button>
+            </div>
+            <br><hr>
+        </div>
+        {{/each}}
         {{else}}
         <div class="panel panel-default">
             <div class="panel-body">
@@ -30,5 +48,5 @@
 
 <!--Clicked Notes Modal-->
 {{#each articles}}
-    {{> notes-modal }}
+{{> notes-modal }}
 {{/each}}

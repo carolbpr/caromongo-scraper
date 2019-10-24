@@ -26,6 +26,15 @@ $(".deleteArticle").on("click", function(){
         method:"POST",
         url:"/articles/delete/"+ articleId
     }).done(function(data){
+        window.location = "/"
+    })
+})
+$(".deleteSavedArticle").on("click", function(){
+    var articleId = $(this).attr("data-id");
+    $.ajax({
+        method:"POST",
+        url:"/articles/delete/"+ articleId
+    }).done(function(data){
         window.location = "/saved"
     })
 })
