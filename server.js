@@ -35,7 +35,7 @@ app.engine("handlebars", exphbs({
 app.set("view engine", "handlebars");
 
 // Connect to the Mongo DB
-var MONGODB_URI = process.env.MONGODB_URI;
+var MONGODB_URI = process.env.MONGODB;
 mongoose.set('useFindAndModify', false);
 mongoose.connect(MONGODB_URI);
 
