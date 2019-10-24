@@ -11,7 +11,7 @@ var notesSchema = new Schema({
     },
     article: {
         type: Schema.Types.ObjectId,
-        ref: "Article"
+        ref: "articles"
     }
 });
 
