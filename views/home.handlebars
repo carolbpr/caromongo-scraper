@@ -1,5 +1,5 @@
 <!--Nav Bar-->
-<div id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+<div id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding: 20px;">
     <ul class="nav justify-content-center">
         <li class="nav-item active text-dark">
             <a class="nav-link" href="/"><b>HOME</b><span class="sr-only">(current)</span></a>
@@ -10,18 +10,18 @@
         <li class="nav-item">
             <button type="button" class="btn btn-primary" id="newScrape">SCRAPE NEW ARTICLES</button>
         </li>
-        <li class="nav-item">
-            <button type="button" class="btn btn-primary" id="deleteAll">DELETE ARTICLES</button>
+        <li class="nav-item" style="margin-left:5px;">
+            <button type="button" class="btn btn-danger" id="deleteAll">CLEAR ARTICLES</button>
         </li>
     </ul>
 </div>
 
-<div class="container" style="text-align:center">
-    <img src="/assets/img/Logo.png" style="width: 50%;" alt="logo">
-    <h1 style="font-family: News Cycle;">Scraped Articles</h1>
-    <br><br><hr>
+<div class="text-center" style="background-size: cover;
+    background-image:url(/assets/img/newspaper.jpeg);
+    opacity:0.8">
+        <img src="/assets/img/Logo.png" style="width: 50%;" alt="logo">
+        <h1><b>Scraped Articles</b></h1>
 </div>
-
 <!--Homepage-->
 <div class="container">
     <div class="col-md-12">
@@ -43,7 +43,7 @@
         {{else}}
         <div class="panel panel-default">
             <div class="panel-body">
-                <h4>Uh Oh. Looks like we don't have any new articles.</h4>
+                <h4 style="font-family: News Cycle;">Uh Oh. Looks like we don't have any new articles.</h4>
             </div>
         </div>
         {{/if}}
